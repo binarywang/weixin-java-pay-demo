@@ -36,6 +36,11 @@ public class WxPayProperties {
      */
     private String subMchId;
 
+    /**
+     * apiclient_cert.p12的文件的绝对路径
+     */
+    private String keyPath;
+
     public String getAppId() {
         return this.appId;
     }
@@ -74,6 +79,14 @@ public class WxPayProperties {
 
     public void setSubMchId(String subMchId) {
         this.subMchId = subMchId;
+    }
+
+    public String getKeyPath() {
+        return this.keyPath;
+    }
+
+    public void setKeyPath(String keyPath) {
+        this.keyPath = keyPath;
     }
 
     @Override

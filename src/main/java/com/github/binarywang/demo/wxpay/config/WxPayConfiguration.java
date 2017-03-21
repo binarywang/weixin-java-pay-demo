@@ -29,6 +29,7 @@ public class WxPayConfiguration {
         payConfig.setMchKey(this.properties.getMchKey());
         payConfig.setSubAppId(this.properties.getSubAppId());
         payConfig.setSubMchId(this.properties.getSubMchId());
+        payConfig.setKeyPath(this.properties.getKeyPath());
 
         return payConfig;
     }

@@ -11,3 +11,4 @@ wechat:
     mchKey:
     subAppId:
     subMchId:
+    keyPath:
