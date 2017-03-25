@@ -35,7 +35,7 @@ public class WxPayConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean
+    //@ConditionalOnMissingBean
     public WxPayService wxPayService(WxPayConfig payConfig) {
         WxPayService wxPayService = new WxPayServiceImpl();
         wxPayService.setConfig(payConfig);
