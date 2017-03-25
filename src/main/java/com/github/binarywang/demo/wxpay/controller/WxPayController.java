@@ -15,11 +15,11 @@ import java.util.Map;
 
 
 /**
+ * <pre>
+ *  注意此controller类实现接口WxPayService（implements WxPayService ），
+ *  仅是为了方便演示所有接口的使用，以免漏掉某一个新增加的接口，实际使用时无需如此实现。
+ *  </pre>
  * @author Binary Wang
- *         <pre>
- *                                  注意此controller类实现接口（implements WxPayService ），
- *                                  仅是为了方便演示所有接口的使用，以免漏掉某一个，实际使用时无需如此实现
- *                                 </pre>
  */
 @RestController
 @RequestMapping("/pay")
@@ -244,7 +244,7 @@ public class WxPayController implements WxPayService {
      */
     @Override
     public byte[] createScanPayQrcodeMode1(String productId, File logoFile, Integer sideLength) {
-        return this.wxService.createScanPayQrcodeMode1(productId, logoFile,sideLength);
+        return this.wxService.createScanPayQrcodeMode1(productId, logoFile, sideLength);
     }
 
     /**
@@ -323,9 +323,9 @@ public class WxPayController implements WxPayService {
     @Override
     @GetMapping("/downloadBill")
     public File downloadBill(@RequestParam String billDate,
-                             @RequestParam  String billType,
-                             @RequestParam  String tarType,
-                             @RequestParam  String deviceInfo) throws WxErrorException {
+                             @RequestParam String billType,
+                             @RequestParam String tarType,
+                             @RequestParam String deviceInfo) throws WxErrorException {
         return this.wxService.downloadBill(billDate, billType, tarType, deviceInfo);
     }
 
