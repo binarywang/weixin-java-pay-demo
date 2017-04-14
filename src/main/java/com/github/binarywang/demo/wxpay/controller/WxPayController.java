@@ -369,6 +369,30 @@ public class WxPayController implements WxPayService {
         return this.wxService.reverseOrder(request);
     }
 
+    @Override
+    public String shorturl(WxPayShorturlRequest wxPayShorturlRequest) throws WxErrorException {
+        //TODO 待补充完善
+        return null;
+    }
+
+    @Override
+    public String shorturl(String s) throws WxErrorException {
+        //TODO 待补充完善
+        return null;
+    }
+
+    @Override
+    public String authcode2Openid(WxPayAuthcode2OpenidRequest wxPayAuthcode2OpenidRequest) throws WxErrorException {
+        //TODO 待补充完善
+        return null;
+    }
+
+    @Override
+    public String authcode2Openid(String s) throws WxErrorException {
+        //TODO 待补充完善
+        return null;
+    }
+
     /**
      * 请忽略之
      */
