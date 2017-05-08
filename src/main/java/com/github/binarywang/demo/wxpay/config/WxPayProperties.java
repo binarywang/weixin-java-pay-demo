@@ -9,7 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  *
  * @author Binary Wang
  */
-@ConfigurationProperties(prefix = "wxpay.pay")
+@ConfigurationProperties(prefix = "wechat.pay")
 public class WxPayProperties {
     /**
      * 设置微信公众号的appid
