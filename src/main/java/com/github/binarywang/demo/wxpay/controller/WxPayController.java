@@ -322,10 +322,10 @@ public class WxPayController implements WxPayService {
      */
     @Override
     @GetMapping("/downloadBill")
-    public File downloadBill(@RequestParam String billDate,
-                             @RequestParam String billType,
-                             @RequestParam String tarType,
-                             @RequestParam String deviceInfo) throws WxErrorException {
+    public WxPayBillResult downloadBill(@RequestParam String billDate,
+                                        @RequestParam String billType,
+                                        @RequestParam String tarType,
+                                        @RequestParam String deviceInfo) throws WxErrorException {
         return this.wxService.downloadBill(billDate, billType, tarType, deviceInfo);
     }
 
