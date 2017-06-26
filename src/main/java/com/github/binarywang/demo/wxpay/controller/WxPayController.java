@@ -3,8 +3,8 @@ package com.github.binarywang.demo.wxpay.controller;
 import com.github.binarywang.wxpay.bean.request.*;
 import com.github.binarywang.wxpay.bean.result.*;
 import com.github.binarywang.wxpay.config.WxPayConfig;
+import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
-import me.chanjar.weixin.common.exception.WxErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -48,7 +48,7 @@ public class WxPayController implements WxPayService {
     @GetMapping("/queryOrder")
     public WxPayOrderQueryResult queryOrder(@RequestParam(required = false) String transactionId,
                                             @RequestParam(required = false) String outTradeNo)
-            throws WxErrorException {
+            throws WxPayException {
         return this.wxService.queryOrder(transactionId, outTradeNo);
     }
 
@@ -72,7 +72,7 @@ public class WxPayController implements WxPayService {
         try {
             WxPayOrderCloseResult orderCloseResult = this.wxService.closeOrder(outTradeNo);
             return orderCloseResult;
-        } catch (WxErrorException e) {
+        } catch (WxPayException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
@@ -88,7 +88,7 @@ public class WxPayController implements WxPayService {
      */
     @Override
     @PostMapping("/unifiedOrder")
-    public WxPayUnifiedOrderResult unifiedOrder(@RequestBody WxPayUnifiedOrderRequest request) throws WxErrorException {
+    public WxPayUnifiedOrderResult unifiedOrder(@RequestBody WxPayUnifiedOrderRequest request) throws WxPayException {
         return this.wxService.unifiedOrder(request);
     }
 
@@ -100,7 +100,7 @@ public class WxPayController implements WxPayService {
      */
     @Override
     @PostMapping("/payInfo")
-    public Map<String, String> getPayInfo(@RequestBody WxPayUnifiedOrderRequest request) throws WxErrorException {
+    public Map<String, String> getPayInfo(@RequestBody WxPayUnifiedOrderRequest request) throws WxPayException {
         return this.wxService.getPayInfo(request);
     }
 
@@ -116,7 +116,7 @@ public class WxPayController implements WxPayService {
      */
     @Override
     @PostMapping("/refund")
-    public WxPayRefundResult refund(@RequestBody WxPayRefundRequest request) throws WxErrorException {
+    public WxPayRefundResult refund(@RequestBody WxPayRefundRequest request) throws WxPayException {
         return this.wxService.refund(request);
     }
 
@@ -143,7 +143,7 @@ public class WxPayController implements WxPayService {
                                               @RequestParam(required = false) String outTradeNo,
                                               @RequestParam(required = false) String outRefundNo,
                                               @RequestParam(required = false) String refundId)
-            throws WxErrorException {
+            throws WxPayException {
         return this.wxService.refundQuery(transactionId, outTradeNo, outRefundNo, refundId);
     }
 
@@ -155,7 +155,7 @@ public class WxPayController implements WxPayService {
      */
     @Override
     @PostMapping("/getOrderNotifyResult")
-    public WxPayOrderNotifyResult getOrderNotifyResult(@RequestBody String xmlData) throws WxErrorException {
+    public WxPayOrderNotifyResult getOrderNotifyResult(@RequestBody String xmlData) throws WxPayException {
         return this.wxService.getOrderNotifyResult(xmlData);
     }
 
@@ -173,7 +173,7 @@ public class WxPayController implements WxPayService {
      */
     @Override
     @PostMapping("sendRedpack")
-    public WxPaySendRedpackResult sendRedpack(@RequestBody WxPaySendRedpackRequest request) throws WxErrorException {
+    public WxPaySendRedpackResult sendRedpack(@RequestBody WxPaySendRedpackRequest request) throws WxPayException {
         return this.wxService.sendRedpack(request);
     }
 
@@ -190,7 +190,7 @@ public class WxPayController implements WxPayService {
      */
     @Override
     @GetMapping("/queryRedpack/{mchBillNo}")
-    public WxPayRedpackQueryResult queryRedpack(@PathVariable String mchBillNo) throws WxErrorException {
+    public WxPayRedpackQueryResult queryRedpack(@PathVariable String mchBillNo) throws WxPayException {
         return this.wxService.queryRedpack(mchBillNo);
     }
 
@@ -208,7 +208,7 @@ public class WxPayController implements WxPayService {
      */
     @Override
     @PostMapping("/entPay")
-    public WxEntPayResult entPay(@RequestBody WxEntPayRequest request) throws WxErrorException {
+    public WxEntPayResult entPay(@RequestBody WxEntPayRequest request) throws WxPayException {
         return this.wxService.entPay(request);
     }
 
@@ -224,7 +224,7 @@ public class WxPayController implements WxPayService {
      */
     @Override
     @GetMapping("/queryEntPay/{partnerTradeNo}")
-    public WxEntPayQueryResult queryEntPay(@PathVariable String partnerTradeNo) throws WxErrorException {
+    public WxEntPayQueryResult queryEntPay(@PathVariable String partnerTradeNo) throws WxPayException {
         return this.wxService.queryEntPay(partnerTradeNo);
     }
 
@@ -297,7 +297,7 @@ public class WxPayController implements WxPayService {
      */
     @Override
     @PostMapping("/report")
-    public void report(@RequestBody WxPayReportRequest request) throws WxErrorException {
+    public void report(@RequestBody WxPayReportRequest request) throws WxPayException {
         this.wxService.report(request);
     }
 
@@ -325,7 +325,7 @@ public class WxPayController implements WxPayService {
     public WxPayBillResult downloadBill(@RequestParam String billDate,
                                         @RequestParam String billType,
                                         @RequestParam String tarType,
-                                        @RequestParam String deviceInfo) throws WxErrorException {
+                                        @RequestParam String deviceInfo) throws WxPayException {
         return this.wxService.downloadBill(billDate, billType, tarType, deviceInfo);
     }
 
@@ -340,12 +340,10 @@ public class WxPayController implements WxPayService {
      * 接口地址：   https://api.mch.weixin.qq.com/pay/micropay
      * 是否需要证书：不需要。
      * </pre>
-     *
-     * @param request
      */
     @Override
     @PostMapping("/micropay")
-    public WxPayMicropayResult micropay(@RequestBody WxPayMicropayRequest request) throws WxErrorException {
+    public WxPayMicropayResult micropay(@RequestBody WxPayMicropayRequest request) throws WxPayException {
         return this.micropay(request);
     }
 
@@ -361,36 +359,41 @@ public class WxPayController implements WxPayService {
      *  是否需要证书：请求需要双向证书。
      * </pre>
      *
-     * @param request
      */
     @Override
     @PostMapping("/reverseOrder")
-    public WxPayOrderReverseResult reverseOrder(@RequestBody WxPayOrderReverseRequest request) throws WxErrorException {
+    public WxPayOrderReverseResult reverseOrder(@RequestBody WxPayOrderReverseRequest request) throws WxPayException {
         return this.wxService.reverseOrder(request);
     }
 
     @Override
-    public String shorturl(WxPayShorturlRequest wxPayShorturlRequest) throws WxErrorException {
+    public String shorturl(WxPayShorturlRequest wxPayShorturlRequest) throws WxPayException {
         //TODO 待补充完善
         return null;
     }
 
     @Override
-    public String shorturl(String s) throws WxErrorException {
+    public String shorturl(String s) throws WxPayException {
         //TODO 待补充完善
         return null;
     }
 
     @Override
-    public String authcode2Openid(WxPayAuthcode2OpenidRequest wxPayAuthcode2OpenidRequest) throws WxErrorException {
+    public String authcode2Openid(WxPayAuthcode2OpenidRequest wxPayAuthcode2OpenidRequest) throws WxPayException {
         //TODO 待补充完善
         return null;
     }
 
     @Override
-    public String authcode2Openid(String s) throws WxErrorException {
+    public String authcode2Openid(String s) throws WxPayException {
         //TODO 待补充完善
         return null;
+    }
+
+    @Override
+    @GetMapping("/getSandboxSignKey")
+    public String getSandboxSignKey() throws WxPayException {
+        return this.wxService.getSandboxSignKey();
     }
 
     /**
