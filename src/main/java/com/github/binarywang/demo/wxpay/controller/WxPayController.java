@@ -149,7 +149,7 @@ public class WxPayController implements WxPayService {
 
     /**
      * 读取支付结果通知
-     * 详见http://com.github.binarywang.wechat.pay.bean.pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_7
+     * 详见https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_7
      *
      * @param xmlData
      */
