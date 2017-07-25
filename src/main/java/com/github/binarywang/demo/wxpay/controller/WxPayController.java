@@ -344,7 +344,7 @@ public class WxPayController implements WxPayService {
     @Override
     @PostMapping("/micropay")
     public WxPayMicropayResult micropay(@RequestBody WxPayMicropayRequest request) throws WxPayException {
-        return this.micropay(request);
+        return this.wxService.micropay(request);
     }
 
     /**
