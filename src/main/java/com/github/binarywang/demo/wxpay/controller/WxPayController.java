@@ -1,5 +1,6 @@
 package com.github.binarywang.demo.wxpay.controller;
 
+import com.github.binarywang.wxpay.bean.coupon.*;
 import com.github.binarywang.wxpay.bean.request.*;
 import com.github.binarywang.wxpay.bean.result.*;
 import com.github.binarywang.wxpay.config.WxPayConfig;
@@ -19,6 +20,7 @@ import java.util.Map;
  *  注意此controller类实现接口WxPayService（implements WxPayService ），
  *  仅是为了方便演示所有接口的使用，以免漏掉某一个新增加的接口，实际使用时无需如此实现。
  *  </pre>
+ *
  * @author Binary Wang
  */
 @RestController
@@ -358,7 +360,6 @@ public class WxPayController implements WxPayService {
      *  接口链接 ：https://api.mch.weixin.qq.com/secapi/pay/reverse
      *  是否需要证书：请求需要双向证书。
      * </pre>
-     *
      */
     @Override
     @PostMapping("/reverseOrder")
@@ -394,6 +395,27 @@ public class WxPayController implements WxPayService {
     @GetMapping("/getSandboxSignKey")
     public String getSandboxSignKey() throws WxPayException {
         return this.wxService.getSandboxSignKey();
+    }
+
+    @Override
+    @PostMapping("/sendCoupon")
+    public WxPayCouponSendResult sendCoupon(@RequestBody WxPayCouponSendRequest request)
+            throws WxPayException {
+        return this.wxService.sendCoupon(request);
+    }
+
+    @Override
+    @PostMapping("/queryCouponStock")
+    public WxPayCouponStockQueryResult queryCouponStock(@RequestBody WxPayCouponStockQueryRequest request)
+            throws WxPayException {
+        return this.wxService.queryCouponStock(request);
+    }
+
+    @Override
+    @PostMapping("/queryCouponInfo")
+    public WxPayCouponInfoQueryResult queryCouponInfo(@RequestBody WxPayCouponInfoQueryRequest request)
+            throws WxPayException {
+        return this.wxService.queryCouponInfo(request);
     }
 
     /**
