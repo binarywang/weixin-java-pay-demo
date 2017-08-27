@@ -1,6 +1,6 @@
 #### 本Demo基于Spring Boot构建，实现微信支付开发功能。
 
-[![Build Status](https://travis-ci.org/Wechat-Group/weixin-java-pay-demo.svg?branch=master)](https://travis-ci.org/Wechat-Group/weixin-java-pay-demo)
+[![Build Status](https://travis-ci.org/binarywang/weixin-java-pay-demo.svg?branch=master)](https://travis-ci.org/binarywang/weixin-java-pay-demo)
 -----------------------
 
 ## 使用步骤：
