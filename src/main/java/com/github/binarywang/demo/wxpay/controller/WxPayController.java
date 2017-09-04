@@ -1,6 +1,9 @@
 package com.github.binarywang.demo.wxpay.controller;
 
+import com.github.binarywang.wxpay.bean.WxPayApiData;
 import com.github.binarywang.wxpay.bean.coupon.*;
+import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
+import com.github.binarywang.wxpay.bean.notify.WxPayRefundNotifyResult;
 import com.github.binarywang.wxpay.bean.request.*;
 import com.github.binarywang.wxpay.bean.result.*;
 import com.github.binarywang.wxpay.config.WxPayConfig;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.File;
+import java.util.Date;
 import java.util.Map;
 
 
@@ -33,7 +37,7 @@ public class WxPayController implements WxPayService {
 
     /**
      * <pre>
-     * 查询订单(详见https://com.github.binarywang.wechat.pay.bean.pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_2)
+     * 查询订单(详见https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_2)
      * 该接口提供所有微信支付订单的查询，商户可以通过查询订单接口主动查询订单状态，完成下一步的业务逻辑。
      * 需要调用查询接口的情况：
      * ◆ 当商户后台、网络、服务器等出现异常，商户系统最终未接收到支付通知；
@@ -82,7 +86,7 @@ public class WxPayController implements WxPayService {
     }
 
     /**
-     * 统一下单(详见http://com.github.binarywang.wechat.pay.bean.pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_1)
+     * 统一下单(详见https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_1)
      * 在发起微信支付前，需要调用统一下单接口，获取"预支付交易会话标识"
      * 接口地址：https://api.mch.weixin.qq.com/pay/unifiedorder
      *
@@ -149,16 +153,28 @@ public class WxPayController implements WxPayService {
         return this.wxService.refundQuery(transactionId, outTradeNo, outRefundNo, refundId);
     }
 
+    @Override
+    @Deprecated
+    public WxPayOrderNotifyResult getOrderNotifyResult(String xmlData) throws WxPayException {
+        return this.wxService.getOrderNotifyResult(xmlData);
+    }
+
     /**
-     * 读取支付结果通知
-     * 详见https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_7
-     *
-     * @param xmlData
+     * 此方法需要改造，根据实际需要返回com.github.binarywang.wxpay.bean.notify.WxPayNotifyResponse对象
      */
     @Override
-    @PostMapping("/getOrderNotifyResult")
-    public WxPayOrderNotifyResult getOrderNotifyResult(@RequestBody String xmlData) throws WxPayException {
-        return this.wxService.getOrderNotifyResult(xmlData);
+    @PostMapping("/parseOrderNotifyResult")
+    public WxPayOrderNotifyResult parseOrderNotifyResult(@RequestBody String xmlData) throws WxPayException {
+        return this.wxService.parseOrderNotifyResult(xmlData);
+    }
+
+    /**
+     * 此方法需要改造，根据实际需要返回com.github.binarywang.wxpay.bean.notify.WxPayNotifyResponse对象
+     */
+    @Override
+    @PostMapping("/parseRefundNotifyResult")
+    public WxPayRefundNotifyResult parseRefundNotifyResult(@RequestBody String xmlData) throws WxPayException {
+        return this.wxService.parseRefundNotifyResult(xmlData);
     }
 
     /**
@@ -416,6 +432,20 @@ public class WxPayController implements WxPayService {
     public WxPayCouponInfoQueryResult queryCouponInfo(@RequestBody WxPayCouponInfoQueryRequest request)
             throws WxPayException {
         return this.wxService.queryCouponInfo(request);
+    }
+
+    /**
+     * 请忽略之
+     */
+    @Override
+    public WxPayApiData getWxApiData() {
+        return null;
+    }
+
+    @Override
+    @PostMapping("/queryComment")
+    public String queryComment(Date beginDate, Date endDate, Integer offset, Integer limit) throws WxPayException {
+        return this.queryComment(beginDate, endDate, offset, limit);
     }
 
     /**
