@@ -85,6 +85,12 @@ public class WxPayController implements WxPayService {
 
     }
 
+    @Override
+    @PostMapping("/createOrder")
+    public <T> T createOrder(@RequestBody WxPayUnifiedOrderRequest request) throws WxPayException {
+        return this.wxService.createOrder(request);
+    }
+
     /**
      * 统一下单(详见https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_1)
      * 在发起微信支付前，需要调用统一下单接口，获取"预支付交易会话标识"
@@ -99,15 +105,12 @@ public class WxPayController implements WxPayService {
     }
 
     /**
-     * 该接口调用“统一下单”接口，并拼装发起支付请求需要的参数
-     * 详见http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141115&token=&lang=zh_CN
-     *
-     * @param request 请求对象，注意一些参数如appid、mchid等不用设置，方法内会自动从配置对象中获取到（前提是对应配置中已经设置）
+     * 不建议使用
      */
     @Override
-    @PostMapping("/payInfo")
-    public Map<String, String> getPayInfo(@RequestBody WxPayUnifiedOrderRequest request) throws WxPayException {
-        return this.wxService.getPayInfo(request);
+    @Deprecated
+    public Map<String, String> getPayInfo(WxPayUnifiedOrderRequest request) throws WxPayException {
+        return null;
     }
 
     /**
