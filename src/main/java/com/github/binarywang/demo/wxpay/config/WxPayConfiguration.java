@@ -3,6 +3,7 @@ package com.github.binarywang.demo.wxpay.config;
 import com.github.binarywang.wxpay.config.WxPayConfig;
 import com.github.binarywang.wxpay.service.WxPayService;
 import com.github.binarywang.wxpay.service.impl.WxPayServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -27,8 +28,8 @@ public class WxPayConfiguration {
         payConfig.setAppId(this.properties.getAppId());
         payConfig.setMchId(this.properties.getMchId());
         payConfig.setMchKey(this.properties.getMchKey());
-        payConfig.setSubAppId(this.properties.getSubAppId());
-        payConfig.setSubMchId(this.properties.getSubMchId());
+        payConfig.setSubAppId(StringUtils.trimToNull(this.properties.getSubAppId()));
+        payConfig.setSubMchId(StringUtils.trimToNull(this.properties.getSubMchId()));
         payConfig.setKeyPath(this.properties.getKeyPath());
 
         return payConfig;
