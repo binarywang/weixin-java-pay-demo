@@ -27,12 +27,12 @@ public class WxPayProperties {
     private String mchKey;
 
     /**
-     * 服务商模式下的子商户公众账号ID
+     * 服务商模式下的子商户公众账号ID，普通模式请不要配置，请在配置文件中将对应项删除
      */
     private String subAppId;
 
     /**
-     * 服务商模式下的子商户号
+     * 服务商模式下的子商户号，普通模式请不要配置，最好是请在配置文件中将对应项删除
      */
     private String subMchId;
 
