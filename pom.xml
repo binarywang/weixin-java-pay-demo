@@ -18,7 +18,7 @@
     <description>微信支付 Demo with Spring Boot</description>
 
     <properties>
-        <weixin-java-pay.version>2.8.3.BETA</weixin-java-pay.version>
+        <weixin-java-pay.version>2.8.5.BETA</weixin-java-pay.version>
 
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -71,9 +71,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <groups>com.testwithspring.starter.springboot.UnitTest</groups>
-                </configuration>
             </plugin>
         </plugins>
     </build>
