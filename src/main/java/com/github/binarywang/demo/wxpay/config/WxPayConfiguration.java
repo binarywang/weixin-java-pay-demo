@@ -18,29 +18,29 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnClass(WxPayService.class)
 @EnableConfigurationProperties(WxPayProperties.class)
 public class WxPayConfiguration {
-    @Autowired
-    private WxPayProperties properties;
+  @Autowired
+  private WxPayProperties properties;
 
-    @Bean
-    @ConditionalOnMissingBean
-    public WxPayConfig config() {
-        WxPayConfig payConfig = new WxPayConfig();
-        payConfig.setAppId(this.properties.getAppId());
-        payConfig.setMchId(this.properties.getMchId());
-        payConfig.setMchKey(this.properties.getMchKey());
-        payConfig.setSubAppId(StringUtils.trimToNull(this.properties.getSubAppId()));
-        payConfig.setSubMchId(StringUtils.trimToNull(this.properties.getSubMchId()));
-        payConfig.setKeyPath(this.properties.getKeyPath());
+  @Bean
+  @ConditionalOnMissingBean
+  public WxPayConfig config() {
+    WxPayConfig payConfig = new WxPayConfig();
+    payConfig.setAppId(this.properties.getAppId());
+    payConfig.setMchId(this.properties.getMchId());
+    payConfig.setMchKey(this.properties.getMchKey());
+    payConfig.setSubAppId(StringUtils.trimToNull(this.properties.getSubAppId()));
+    payConfig.setSubMchId(StringUtils.trimToNull(this.properties.getSubMchId()));
+    payConfig.setKeyPath(this.properties.getKeyPath());
 
-        return payConfig;
-    }
+    return payConfig;
+  }
 
-    @Bean
-    //@ConditionalOnMissingBean
-    public WxPayService wxPayService(WxPayConfig payConfig) {
-        WxPayService wxPayService = new WxPayServiceImpl();
-        wxPayService.setConfig(payConfig);
-        return wxPayService;
-    }
+  @Bean
+  //@ConditionalOnMissingBean
+  public WxPayService wxPayService(WxPayConfig payConfig) {
+    WxPayService wxPayService = new WxPayServiceImpl();
+    wxPayService.setConfig(payConfig);
+    return wxPayService;
+  }
 
 }

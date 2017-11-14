@@ -10,12 +10,12 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
  */
 @SpringBootApplication
 public class WxPayDemoApplication extends SpringBootServletInitializer {
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(WxPayDemoApplication.class);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(WxPayDemoApplication.class, args);
+  }
 
-    public static void main(String[] args) {
-        SpringApplication.run(WxPayDemoApplication.class, args);
-    }
+  @Override
+  protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+    return application.sources(WxPayDemoApplication.class);
+  }
 }
