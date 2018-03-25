@@ -23,7 +23,7 @@ public class WxPayConfiguration {
 
   @Bean
   @ConditionalOnMissingBean
-  public WxPayConfig config() {
+  public WxPayConfig payConfig() {
     WxPayConfig payConfig = new WxPayConfig();
     payConfig.setAppId(this.properties.getAppId());
     payConfig.setMchId(this.properties.getMchId());
