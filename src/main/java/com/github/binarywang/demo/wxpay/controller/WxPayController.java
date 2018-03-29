@@ -27,6 +27,7 @@ import com.github.binarywang.wxpay.bean.entpay.EntPayRequest;
 import com.github.binarywang.wxpay.bean.entpay.EntPayResult;
 import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
 import com.github.binarywang.wxpay.bean.notify.WxPayRefundNotifyResult;
+import com.github.binarywang.wxpay.bean.notify.WxScanPayNotifyResult;
 import com.github.binarywang.wxpay.bean.request.WxPayAuthcode2OpenidRequest;
 import com.github.binarywang.wxpay.bean.request.WxPayMicropayRequest;
 import com.github.binarywang.wxpay.bean.request.WxPayOrderReverseRequest;
@@ -224,7 +225,7 @@ public class WxPayController implements WxPayService {
   }
 
   /**
-   * 此方法需要改造，根据实际需要返回com.github.binarywang.wxpay.bean.notify.WxPayNotifyResponse对象
+   * TODO 此方法需要改造，根据实际需要返回com.github.binarywang.wxpay.bean.notify.WxPayNotifyResponse对象
    */
   @Override
   @PostMapping("/parseOrderNotifyResult")
@@ -233,12 +234,21 @@ public class WxPayController implements WxPayService {
   }
 
   /**
-   * 此方法需要改造，根据实际需要返回com.github.binarywang.wxpay.bean.notify.WxPayNotifyResponse对象
+   * TODO 此方法需要改造，根据实际需要返回com.github.binarywang.wxpay.bean.notify.WxPayNotifyResponse对象
    */
   @Override
   @PostMapping("/parseRefundNotifyResult")
   public WxPayRefundNotifyResult parseRefundNotifyResult(@RequestBody String xmlData) throws WxPayException {
     return this.wxService.parseRefundNotifyResult(xmlData);
+  }
+
+  /**
+   * TODO 此方法需要改造，根据实际需要返回所需对象
+   */
+  @Override
+  @PostMapping("/parseScanPayNotifyResult")
+  public WxScanPayNotifyResult parseScanPayNotifyResult(String xmlData) throws WxPayException {
+    return this.wxService.parseScanPayNotifyResult(xmlData);
   }
 
   /**
