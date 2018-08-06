@@ -2,12 +2,8 @@ package com.github.binarywang.demo.wx.pay.controller;
 
 import java.io.File;
 import java.util.Date;
-import java.util.Map;
-import javax.annotation.Resource;
 
-import com.github.binarywang.wxpay.bean.request.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.binarywang.wxpay.bean.WxPayApiData;
 import com.github.binarywang.wxpay.bean.coupon.WxPayCouponInfoQueryRequest;
 import com.github.binarywang.wxpay.bean.coupon.WxPayCouponInfoQueryResult;
 import com.github.binarywang.wxpay.bean.coupon.WxPayCouponSendRequest;
@@ -29,6 +24,16 @@ import com.github.binarywang.wxpay.bean.entpay.EntPayResult;
 import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
 import com.github.binarywang.wxpay.bean.notify.WxPayRefundNotifyResult;
 import com.github.binarywang.wxpay.bean.notify.WxScanPayNotifyResult;
+import com.github.binarywang.wxpay.bean.request.WxPayDownloadBillRequest;
+import com.github.binarywang.wxpay.bean.request.WxPayMicropayRequest;
+import com.github.binarywang.wxpay.bean.request.WxPayOrderCloseRequest;
+import com.github.binarywang.wxpay.bean.request.WxPayOrderQueryRequest;
+import com.github.binarywang.wxpay.bean.request.WxPayOrderReverseRequest;
+import com.github.binarywang.wxpay.bean.request.WxPayRefundQueryRequest;
+import com.github.binarywang.wxpay.bean.request.WxPayRefundRequest;
+import com.github.binarywang.wxpay.bean.request.WxPayReportRequest;
+import com.github.binarywang.wxpay.bean.request.WxPaySendRedpackRequest;
+import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
 import com.github.binarywang.wxpay.bean.result.WxPayBillResult;
 import com.github.binarywang.wxpay.bean.result.WxPayMicropayResult;
 import com.github.binarywang.wxpay.bean.result.WxPayOrderCloseResult;
@@ -39,55 +44,21 @@ import com.github.binarywang.wxpay.bean.result.WxPayRefundQueryResult;
 import com.github.binarywang.wxpay.bean.result.WxPayRefundResult;
 import com.github.binarywang.wxpay.bean.result.WxPaySendRedpackResult;
 import com.github.binarywang.wxpay.bean.result.WxPayUnifiedOrderResult;
-import com.github.binarywang.wxpay.config.WxPayConfig;
 import com.github.binarywang.wxpay.exception.WxPayException;
-import com.github.binarywang.wxpay.service.EntPayService;
 import com.github.binarywang.wxpay.service.WxPayService;
 
 
 /**
- * <pre>
- *  注意此controller类实现接口WxPayService（implements WxPayService ），
- *  仅是为了方便演示所有接口的使用，以免漏掉某一个新增加的接口，实际使用时请不要这么做。
- *  </pre>
- *
  * @author Binary Wang
  */
 @RestController
 @RequestMapping("/pay")
-public class WxPayController implements WxPayService {
-  private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-  @Resource(name = "wxPayService")
+public class WxPayController {
   private WxPayService wxService;
 
-  @Override
-  public String getPayBaseUrl() {
-    //do nothing
-    return null;
-  }
-
-  @Override
-  public byte[] postForBytes(String url, String requestStr, boolean useKey) throws WxPayException {
-    //do nothing
-    return new byte[0];
-  }
-
-  @Override
-  public String post(String url, String requestStr, boolean useKey) throws WxPayException {
-    //do nothing
-    return null;
-  }
-
-  @Override
-  public EntPayService getEntPayService() {
-    //do nothing
-    return null;
-  }
-
-  @Override
-  public void setEntPayService(EntPayService entPayService) {
-    //do nothing
+  @Autowired
+  public WxPayController(WxPayService wxService) {
+    this.wxService = wxService;
   }
 
   /**
@@ -105,7 +76,6 @@ public class WxPayController implements WxPayService {
    * @param transactionId 微信订单号
    * @param outTradeNo    商户系统内部的订单号，当没提供transactionId时需要传这个。
    */
-  @Override
   @GetMapping("/queryOrder")
   public WxPayOrderQueryResult queryOrder(@RequestParam(required = false) String transactionId,
                                           @RequestParam(required = false) String outTradeNo)
@@ -113,8 +83,7 @@ public class WxPayController implements WxPayService {
     return this.wxService.queryOrder(transactionId, outTradeNo);
   }
 
-  @Override
-  public WxPayOrderQueryResult queryOrder(WxPayOrderQueryRequest request) throws WxPayException {
+  public WxPayOrderQueryResult queryOrder(WxPayOrderQueryRequest wxPayOrderQueryRequest) throws WxPayException {
     return null;
   }
 
@@ -132,11 +101,11 @@ public class WxPayController implements WxPayService {
    *
    * @param outTradeNo 商户系统内部的订单号
    */
-  @Override
   @GetMapping("/closeOrder/{outTradeNo}")
   public WxPayOrderCloseResult closeOrder(@PathVariable String outTradeNo) {
     try {
-      return this.wxService.closeOrder(outTradeNo);
+      WxPayOrderCloseResult orderCloseResult = this.wxService.closeOrder(outTradeNo);
+      return orderCloseResult;
     } catch (WxPayException e) {
       e.printStackTrace();
       throw new RuntimeException(e);
@@ -144,12 +113,10 @@ public class WxPayController implements WxPayService {
 
   }
 
-  @Override
-  public WxPayOrderCloseResult closeOrder(WxPayOrderCloseRequest request) throws WxPayException {
+  public WxPayOrderCloseResult closeOrder(WxPayOrderCloseRequest wxPayOrderCloseRequest) throws WxPayException {
     return null;
   }
 
-  @Override
   @PostMapping("/createOrder")
   public <T> T createOrder(@RequestBody WxPayUnifiedOrderRequest request) throws WxPayException {
     return this.wxService.createOrder(request);
@@ -162,19 +129,9 @@ public class WxPayController implements WxPayService {
    *
    * @param request 请求对象，注意一些参数如appid、mchid等不用设置，方法内会自动从配置对象中获取到（前提是对应配置中已经设置）
    */
-  @Override
   @PostMapping("/unifiedOrder")
   public WxPayUnifiedOrderResult unifiedOrder(@RequestBody WxPayUnifiedOrderRequest request) throws WxPayException {
     return this.wxService.unifiedOrder(request);
-  }
-
-  /**
-   * 不建议使用
-   */
-  @Override
-  @Deprecated
-  public Map<String, String> getPayInfo(WxPayUnifiedOrderRequest request) throws WxPayException {
-    return null;
   }
 
   /**
@@ -187,7 +144,6 @@ public class WxPayController implements WxPayService {
    * @param request 请求对象
    * @return 退款操作结果
    */
-  @Override
   @PostMapping("/refund")
   public WxPayRefundResult refund(@RequestBody WxPayRefundRequest request) throws WxPayException {
     return this.wxService.refund(request);
@@ -210,7 +166,6 @@ public class WxPayController implements WxPayService {
    * @param refundId      微信退款单号
    * @return 退款信息
    */
-  @Override
   @GetMapping("/refundQuery")
   public WxPayRefundQueryResult refundQuery(@RequestParam(required = false) String transactionId,
                                             @RequestParam(required = false) String outTradeNo,
@@ -220,15 +175,13 @@ public class WxPayController implements WxPayService {
     return this.wxService.refundQuery(transactionId, outTradeNo, outRefundNo, refundId);
   }
 
-  @Override
-  public WxPayRefundQueryResult refundQuery(WxPayRefundQueryRequest request) throws WxPayException {
+  public WxPayRefundQueryResult refundQuery(WxPayRefundQueryRequest wxPayRefundQueryRequest) throws WxPayException {
     return null;
   }
 
   /**
    * TODO 此方法需要改造，根据实际需要返回com.github.binarywang.wxpay.bean.notify.WxPayNotifyResponse对象
    */
-  @Override
   @PostMapping("/parseOrderNotifyResult")
   public WxPayOrderNotifyResult parseOrderNotifyResult(@RequestBody String xmlData) throws WxPayException {
     return this.wxService.parseOrderNotifyResult(xmlData);
@@ -237,7 +190,6 @@ public class WxPayController implements WxPayService {
   /**
    * TODO 此方法需要改造，根据实际需要返回com.github.binarywang.wxpay.bean.notify.WxPayNotifyResponse对象
    */
-  @Override
   @PostMapping("/parseRefundNotifyResult")
   public WxPayRefundNotifyResult parseRefundNotifyResult(@RequestBody String xmlData) throws WxPayException {
     return this.wxService.parseRefundNotifyResult(xmlData);
@@ -246,7 +198,6 @@ public class WxPayController implements WxPayService {
   /**
    * TODO 此方法需要改造，根据实际需要返回所需对象
    */
-  @Override
   @PostMapping("/parseScanPayNotifyResult")
   public WxScanPayNotifyResult parseScanPayNotifyResult(String xmlData) throws WxPayException {
     return this.wxService.parseScanPayNotifyResult(xmlData);
@@ -264,7 +215,6 @@ public class WxPayController implements WxPayService {
    *
    * @param request 请求对象
    */
-  @Override
   @PostMapping("sendRedpack")
   public WxPaySendRedpackResult sendRedpack(@RequestBody WxPaySendRedpackRequest request) throws WxPayException {
     return this.wxService.sendRedpack(request);
@@ -281,7 +231,6 @@ public class WxPayController implements WxPayService {
    *
    * @param mchBillNo 商户发放红包的商户订单号，比如10000098201411111234567890
    */
-  @Override
   @GetMapping("/queryRedpack/{mchBillNo}")
   public WxPayRedpackQueryResult queryRedpack(@PathVariable String mchBillNo) throws WxPayException {
     return this.wxService.queryRedpack(mchBillNo);
@@ -333,7 +282,6 @@ public class WxPayController implements WxPayService {
    * @param sideLength 要生成的二维码的边长，如果为空，则取默认值400
    * @return 生成的二维码的字节数组
    */
-  @Override
   public byte[] createScanPayQrcodeMode1(String productId, File logoFile, Integer sideLength) {
     return this.wxService.createScanPayQrcodeMode1(productId, logoFile, sideLength);
   }
@@ -350,7 +298,6 @@ public class WxPayController implements WxPayService {
    * @param productId 产品Id
    * @return 生成的二维码URL连接
    */
-  @Override
   public String createScanPayQrcodeMode1(String productId) {
     return this.wxService.createScanPayQrcodeMode1(productId);
   }
@@ -368,7 +315,6 @@ public class WxPayController implements WxPayService {
    * @param sideLength 要生成的二维码的边长，如果为空，则取默认值400
    * @return 生成的二维码的字节数组
    */
-  @Override
   public byte[] createScanPayQrcodeMode2(String codeUrl, File logoFile, Integer sideLength) {
     return this.wxService.createScanPayQrcodeMode2(codeUrl, logoFile, sideLength);
   }
@@ -386,7 +332,6 @@ public class WxPayController implements WxPayService {
    *
    * @param request
    */
-  @Override
   @PostMapping("/report")
   public void report(@RequestBody WxPayReportRequest request) throws WxPayException {
     this.wxService.report(request);
@@ -411,17 +356,15 @@ public class WxPayController implements WxPayService {
    * @param deviceInfo 设备号	device_info	非必传参数，终端设备号
    * @return 保存到本地的临时文件
    */
-  @Override
-  @GetMapping("/downloadBill")
-  public WxPayBillResult downloadBill(@RequestParam String billDate,
-                                      @RequestParam String billType,
-                                      @RequestParam String tarType,
-                                      @RequestParam String deviceInfo) throws WxPayException {
+  @GetMapping("/downloadBill/{billDate}/{billType}/{tarType}/{deviceInfo}")
+  public WxPayBillResult downloadBill(@PathVariable String billDate,
+                                      @PathVariable String billType,
+                                      @PathVariable String tarType,
+                                      @PathVariable String deviceInfo) throws WxPayException {
     return this.wxService.downloadBill(billDate, billType, tarType, deviceInfo);
   }
 
-  @Override
-  public WxPayBillResult downloadBill(WxPayDownloadBillRequest request) throws WxPayException {
+  public WxPayBillResult downloadBill(WxPayDownloadBillRequest wxPayDownloadBillRequest) throws WxPayException {
     return null;
   }
 
@@ -437,7 +380,6 @@ public class WxPayController implements WxPayService {
    * 是否需要证书：不需要。
    * </pre>
    */
-  @Override
   @PostMapping("/micropay")
   public WxPayMicropayResult micropay(@RequestBody WxPayMicropayRequest request) throws WxPayException {
     return this.wxService.micropay(request);
@@ -455,91 +397,38 @@ public class WxPayController implements WxPayService {
    *  是否需要证书：请求需要双向证书。
    * </pre>
    */
-  @Override
   @PostMapping("/reverseOrder")
   public WxPayOrderReverseResult reverseOrder(@RequestBody WxPayOrderReverseRequest request) throws WxPayException {
     return this.wxService.reverseOrder(request);
   }
 
-  @Override
-  public String shorturl(WxPayShorturlRequest wxPayShorturlRequest) throws WxPayException {
-    //TODO 待补充完善
-    return null;
-  }
-
-  @Override
-  public String shorturl(String s) throws WxPayException {
-    //TODO 待补充完善
-    return null;
-  }
-
-  @Override
-  public String authcode2Openid(WxPayAuthcode2OpenidRequest wxPayAuthcode2OpenidRequest) throws WxPayException {
-    //TODO 待补充完善
-    return null;
-  }
-
-  @Override
-  public String authcode2Openid(String s) throws WxPayException {
-    //TODO 待补充完善
-    return null;
-  }
-
-  @Override
   @GetMapping("/getSandboxSignKey")
   public String getSandboxSignKey() throws WxPayException {
     return this.wxService.getSandboxSignKey();
   }
 
-  @Override
   @PostMapping("/sendCoupon")
   public WxPayCouponSendResult sendCoupon(@RequestBody WxPayCouponSendRequest request)
       throws WxPayException {
     return this.wxService.sendCoupon(request);
   }
 
-  @Override
   @PostMapping("/queryCouponStock")
   public WxPayCouponStockQueryResult queryCouponStock(@RequestBody WxPayCouponStockQueryRequest request)
       throws WxPayException {
     return this.wxService.queryCouponStock(request);
   }
 
-  @Override
   @PostMapping("/queryCouponInfo")
   public WxPayCouponInfoQueryResult queryCouponInfo(@RequestBody WxPayCouponInfoQueryRequest request)
       throws WxPayException {
     return this.wxService.queryCouponInfo(request);
   }
 
-  /**
-   * 请忽略之
-   */
-  @Override
-  public WxPayApiData getWxApiData() {
-    return null;
-  }
-
-  @Override
   @PostMapping("/queryComment")
   public String queryComment(Date beginDate, Date endDate, Integer offset, Integer limit) throws WxPayException {
     return this.queryComment(beginDate, endDate, offset, limit);
   }
 
-  /**
-   * 请忽略之
-   */
-  @Override
-  public WxPayConfig getConfig() {
-    return null;
-  }
-
-  /**
-   * 请忽略之
-   */
-  @Override
-  public void setConfig(WxPayConfig config) {
-
-  }
 }
 
