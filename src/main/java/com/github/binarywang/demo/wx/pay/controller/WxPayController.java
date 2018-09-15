@@ -117,6 +117,13 @@ public class WxPayController {
     return null;
   }
 
+  /**
+   * 调用统一下单接口，并组装生成支付所需参数对象.
+   *
+   * @param request 统一下单请求参数
+   * @param <T>     请使用{@link com.github.binarywang.wxpay.bean.order}包下的类
+   * @return 返回 {@link com.github.binarywang.wxpay.bean.order}包下的类对象
+   */
   @PostMapping("/createOrder")
   public <T> T createOrder(@RequestBody WxPayUnifiedOrderRequest request) throws WxPayException {
     return this.wxService.createOrder(request);
