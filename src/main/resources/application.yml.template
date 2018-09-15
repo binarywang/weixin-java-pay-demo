@@ -1,14 +1,14 @@
 logging:
   level:
-    org.springframework.web: DEBUG
-    com.github.binarywang.demo.wx.pay: DEBUG
-    com.github.binarywang.wxpay: DEBUG
+    org.springframework.web: info
+    com.github.binarywang.demo.wx.pay: debug
+    com.github.binarywang.wxpay: debug
 
-wechat:
+wx:
   pay:
-    appId:
-    mchId:
-    mchKey:
-    subAppId:
-    subMchId:
-    keyPath:
+    appId: #微信公众号或者小程序等的appid
+    mchId: #微信支付商户号
+    mchKey: #微信支付商户密钥
+    subAppId: #服务商模式下的子商户公众账号ID
+    subMchId: #服务商模式下的子商户号
+    keyPath: # p12证书的位置，可以指定绝对路径，也可以指定类路径（以classpath:开头）
