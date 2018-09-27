@@ -10,5 +10,5 @@
 1. 查看`WxPayController`类代码，根据自己需要修改调整相关实现；
 1. 运行Java程序：`WxPayDemoApplication`；
 1. 打开网页浏览器，输入想要访问的地址，比如`http://localhost:8080/pay/closeOrder/123`查看效果。
+1. 还可以访问 http://localhost:8080/swagger-ui.html 来查看所有可用接口，并进行在线调试；
 1. 更多接口使用说明，请参考 [wiki 文档](https://github.com/Wechat-Group/weixin-java-tools/wiki/%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98)
-	
