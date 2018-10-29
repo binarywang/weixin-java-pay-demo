@@ -1,7 +1,9 @@
-#### 本Demo基于Spring Boot构建，演示微信支付后端接口使用方法。
-
+[![码云Gitee](https://gitee.com/binary/weixin-java-pay-demo/badge/star.svg?theme=blue)](https://gitee.com/binary/weixin-java-pay-demo)
+[![Github](http://github-svg-buttons.herokuapp.com/star.svg?user=binarywang&repo=weixin-java-pay-demo&style=flat&background=1081C1)](https://github.com/binarywang/weixin-java-pay-demo)
 [![Build Status](https://travis-ci.org/binarywang/weixin-java-pay-demo.svg?branch=master)](https://travis-ci.org/binarywang/weixin-java-pay-demo)
 -----------------------
+
+#### 本Demo基于Spring Boot构建，演示微信支付后端接口使用方法。
 
 ## 使用步骤：
 1. 配置：复制`/src/main/resources/application.yml.template`或者修改其扩展名生成application.yml文件，并根据自己需要填写相关配置，其中支付相关参数含义请参考WxPayProperties类中的注释（需要注意的是：yml文件内的属性冒号后面的文字之前需要加空格，可参考已有配置，否则属性会设置不成功）；	
