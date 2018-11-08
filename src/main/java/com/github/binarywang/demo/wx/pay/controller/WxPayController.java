@@ -18,6 +18,7 @@ import com.github.binarywang.wxpay.bean.coupon.WxPayCouponSendRequest;
 import com.github.binarywang.wxpay.bean.coupon.WxPayCouponSendResult;
 import com.github.binarywang.wxpay.bean.coupon.WxPayCouponStockQueryRequest;
 import com.github.binarywang.wxpay.bean.coupon.WxPayCouponStockQueryResult;
+import com.github.binarywang.wxpay.bean.notify.WxPayNotifyResponse;
 import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
 import com.github.binarywang.wxpay.bean.notify.WxPayRefundNotifyResult;
 import com.github.binarywang.wxpay.bean.notify.WxScanPayNotifyResult;
@@ -191,31 +192,28 @@ public class WxPayController {
     return this.wxService.refundQuery(wxPayRefundQueryRequest);
   }
 
-  /**
-   * TODO 此方法需要改造，根据实际需要返回com.github.binarywang.wxpay.bean.notify.WxPayNotifyResponse对象
-   */
   @ApiOperation(value = "支付回调通知处理")
-  @PostMapping("/parseOrderNotifyResult")
-  public WxPayOrderNotifyResult parseOrderNotifyResult(@RequestBody String xmlData) throws WxPayException {
-    return this.wxService.parseOrderNotifyResult(xmlData);
+  @PostMapping("/notify/order")
+  public String parseOrderNotifyResult(@RequestBody String xmlData) throws WxPayException {
+    final WxPayOrderNotifyResult notifyResult = this.wxService.parseOrderNotifyResult(xmlData);
+    // TODO 根据自己业务场景需要构造返回对象
+    return WxPayNotifyResponse.success("成功");
   }
 
-  /**
-   * TODO 此方法需要改造，根据实际需要返回com.github.binarywang.wxpay.bean.notify.WxPayNotifyResponse对象
-   */
   @ApiOperation(value = "退款回调通知处理")
-  @PostMapping("/parseRefundNotifyResult")
-  public WxPayRefundNotifyResult parseRefundNotifyResult(@RequestBody String xmlData) throws WxPayException {
-    return this.wxService.parseRefundNotifyResult(xmlData);
+  @PostMapping("/notify/refund")
+  public String parseRefundNotifyResult(@RequestBody String xmlData) throws WxPayException {
+    final WxPayRefundNotifyResult result = this.wxService.parseRefundNotifyResult(xmlData);
+    // TODO 根据自己业务场景需要构造返回对象
+    return WxPayNotifyResponse.success("成功");
   }
 
-  /**
-   * TODO 此方法需要改造，根据实际需要返回所需对象
-   */
   @ApiOperation(value = "扫码支付回调通知处理")
-  @PostMapping("/parseScanPayNotifyResult")
-  public WxScanPayNotifyResult parseScanPayNotifyResult(String xmlData) throws WxPayException {
-    return this.wxService.parseScanPayNotifyResult(xmlData);
+  @PostMapping("/notify/scanpay")
+  public String parseScanPayNotifyResult(String xmlData) throws WxPayException {
+    final WxScanPayNotifyResult result = this.wxService.parseScanPayNotifyResult(xmlData);
+    // TODO 根据自己业务场景需要构造返回对象
+    return WxPayNotifyResponse.success("成功");
   }
 
   /**
