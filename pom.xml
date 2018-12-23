@@ -18,7 +18,7 @@
     <description>微信支付 Demo with Spring Boot</description>
 
     <properties>
-        <weixin-java-pay.version>3.2.0</weixin-java-pay.version>
+        <weixin-java-pay.version>3.3.0</weixin-java-pay.version>
         <io.springfox.version>2.5.0</io.springfox.version>
 
         <maven.compiler.source>1.8</maven.compiler.source>
