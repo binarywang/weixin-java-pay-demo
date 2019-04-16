@@ -5,6 +5,33 @@
 
 #### 本Demo基于Spring Boot构建，演示微信支付后端接口使用方法。
 
+<table border="0">
+	<tbody>
+		<tr>
+			<td align="left" valign="middle">
+        <a href="http://mp.weixin.qq.com/mp/homepage?__biz=MzI3MzAwMzk4OA==&hid=1&sn=f31af3bf562b116b061c9ab4edf70b61&scene=18#wechat_redirect" target="_blank">
+				  <img height="120" src="https://gitee.com/binary/weixin-java-tools/raw/master/qrcodes/mp.png">
+        </a>
+			</td>
+			<td align="center" valign="middle">
+				<a href="https://cloud.tencent.com/redirect.php?redirect=1014&cps_key=a4c06ffe004dbcda44036daa1bf8f876&from=console" target="_blank">
+					<img height="120" src="https://gitee.com/binary/weixin-java-tools/raw/master/banners/tcloud.jpg">
+				</a>
+			</td>
+			<td align="right" valign="middle">
+				<a href="https://coding.net/?utm_source=WxJava" target="_blank">
+					<img height="120" src="https://gitee.com/binary/weixin-java-tools/raw/master/banners/coding.jpg">
+				</a>
+			</td>
+			<td align="center" valign="middle">
+				<a href="https://promotion.aliyun.com/ntms/act/qwbk.html?userCode=7makzf5h" target="_blank">
+					<img height="120" src="https://gitee.com/binary/weixin-java-tools/raw/master/banners/aliyun.jpg">
+				</a>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
 ## 使用步骤：
 1. 新手遇到问题，请务必先阅读[【开发文档首页】](https://github.com/Wechat-Group/WxJava/wiki)的常见问题部分，可以少走很多弯路，节省不少时间。
 1. 配置：复制`/src/main/resources/application.yml.template`或者修改其扩展名生成application.yml文件，并根据自己需要填写相关配置，其中支付相关参数含义请参考WxPayProperties类中的注释（需要注意的是：yml文件内的属性冒号后面的文字之前需要加空格，可参考已有配置，否则属性会设置不成功）；	
