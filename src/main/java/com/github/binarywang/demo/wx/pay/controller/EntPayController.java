@@ -1,23 +1,12 @@
 package com.github.binarywang.demo.wx.pay.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.github.binarywang.wxpay.bean.entpay.EntPayBankQueryResult;
-import com.github.binarywang.wxpay.bean.entpay.EntPayBankRequest;
-import com.github.binarywang.wxpay.bean.entpay.EntPayBankResult;
-import com.github.binarywang.wxpay.bean.entpay.EntPayQueryResult;
-import com.github.binarywang.wxpay.bean.entpay.EntPayRequest;
-import com.github.binarywang.wxpay.bean.entpay.EntPayResult;
+import com.github.binarywang.wxpay.bean.entpay.*;
 import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <pre>

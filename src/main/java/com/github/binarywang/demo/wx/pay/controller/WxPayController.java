@@ -1,51 +1,21 @@
 package com.github.binarywang.demo.wx.pay.controller;
 
-import java.io.File;
-import java.util.Date;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.github.binarywang.wxpay.bean.coupon.WxPayCouponInfoQueryRequest;
-import com.github.binarywang.wxpay.bean.coupon.WxPayCouponInfoQueryResult;
-import com.github.binarywang.wxpay.bean.coupon.WxPayCouponSendRequest;
-import com.github.binarywang.wxpay.bean.coupon.WxPayCouponSendResult;
-import com.github.binarywang.wxpay.bean.coupon.WxPayCouponStockQueryRequest;
-import com.github.binarywang.wxpay.bean.coupon.WxPayCouponStockQueryResult;
+import com.github.binarywang.wxpay.bean.coupon.*;
 import com.github.binarywang.wxpay.bean.notify.WxPayNotifyResponse;
 import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
 import com.github.binarywang.wxpay.bean.notify.WxPayRefundNotifyResult;
 import com.github.binarywang.wxpay.bean.notify.WxScanPayNotifyResult;
-import com.github.binarywang.wxpay.bean.request.WxPayDownloadBillRequest;
-import com.github.binarywang.wxpay.bean.request.WxPayMicropayRequest;
-import com.github.binarywang.wxpay.bean.request.WxPayOrderCloseRequest;
-import com.github.binarywang.wxpay.bean.request.WxPayOrderQueryRequest;
-import com.github.binarywang.wxpay.bean.request.WxPayOrderReverseRequest;
-import com.github.binarywang.wxpay.bean.request.WxPayRefundQueryRequest;
-import com.github.binarywang.wxpay.bean.request.WxPayRefundRequest;
-import com.github.binarywang.wxpay.bean.request.WxPayReportRequest;
-import com.github.binarywang.wxpay.bean.request.WxPaySendRedpackRequest;
-import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
-import com.github.binarywang.wxpay.bean.result.WxPayBillResult;
-import com.github.binarywang.wxpay.bean.result.WxPayMicropayResult;
-import com.github.binarywang.wxpay.bean.result.WxPayOrderCloseResult;
-import com.github.binarywang.wxpay.bean.result.WxPayOrderQueryResult;
-import com.github.binarywang.wxpay.bean.result.WxPayOrderReverseResult;
-import com.github.binarywang.wxpay.bean.result.WxPayRedpackQueryResult;
-import com.github.binarywang.wxpay.bean.result.WxPayRefundQueryResult;
-import com.github.binarywang.wxpay.bean.result.WxPayRefundResult;
-import com.github.binarywang.wxpay.bean.result.WxPaySendRedpackResult;
-import com.github.binarywang.wxpay.bean.result.WxPayUnifiedOrderResult;
+import com.github.binarywang.wxpay.bean.request.*;
+import com.github.binarywang.wxpay.bean.result.*;
 import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.File;
+import java.util.Date;
 
 
 /**
@@ -81,13 +51,13 @@ public class WxPayController {
   @GetMapping("/queryOrder")
   public WxPayOrderQueryResult queryOrder(@RequestParam(required = false) String transactionId,
                                           @RequestParam(required = false) String outTradeNo)
-      throws WxPayException {
+    throws WxPayException {
     return this.wxService.queryOrder(transactionId, outTradeNo);
   }
 
   @ApiOperation(value = "查询订单")
   @PostMapping("/queryOrder")
-  public WxPayOrderQueryResult queryOrder(WxPayOrderQueryRequest wxPayOrderQueryRequest) throws WxPayException {
+  public WxPayOrderQueryResult queryOrder(@RequestBody WxPayOrderQueryRequest wxPayOrderQueryRequest) throws WxPayException {
     return this.wxService.queryOrder(wxPayOrderQueryRequest);
   }
 
@@ -113,7 +83,7 @@ public class WxPayController {
 
   @ApiOperation(value = "关闭订单")
   @PostMapping("/closeOrder")
-  public WxPayOrderCloseResult closeOrder(WxPayOrderCloseRequest wxPayOrderCloseRequest) throws WxPayException {
+  public WxPayOrderCloseResult closeOrder(@RequestBody WxPayOrderCloseRequest wxPayOrderCloseRequest) throws WxPayException {
     return this.wxService.closeOrder(wxPayOrderCloseRequest);
   }
 
@@ -182,13 +152,13 @@ public class WxPayController {
                                             @RequestParam(required = false) String outTradeNo,
                                             @RequestParam(required = false) String outRefundNo,
                                             @RequestParam(required = false) String refundId)
-      throws WxPayException {
+    throws WxPayException {
     return this.wxService.refundQuery(transactionId, outTradeNo, outRefundNo, refundId);
   }
 
   @ApiOperation(value = "退款查询")
   @PostMapping("/refundQuery")
-  public WxPayRefundQueryResult refundQuery(WxPayRefundQueryRequest wxPayRefundQueryRequest) throws WxPayException {
+  public WxPayRefundQueryResult refundQuery(@RequestBody WxPayRefundQueryRequest wxPayRefundQueryRequest) throws WxPayException {
     return this.wxService.refundQuery(wxPayRefundQueryRequest);
   }
 
@@ -340,10 +310,8 @@ public class WxPayController {
    */
   @ApiOperation(value = "下载对账单")
   @GetMapping("/downloadBill/{billDate}/{billType}/{tarType}/{deviceInfo}")
-  public WxPayBillResult downloadBill(@PathVariable String billDate,
-                                      @PathVariable String billType,
-                                      @PathVariable String tarType,
-                                      @PathVariable String deviceInfo) throws WxPayException {
+  public WxPayBillResult downloadBill(@PathVariable String billDate, @PathVariable String billType,
+                                      @PathVariable String tarType, @PathVariable String deviceInfo) throws WxPayException {
     return this.wxService.downloadBill(billDate, billType, tarType, deviceInfo);
   }
 
@@ -397,22 +365,19 @@ public class WxPayController {
 
   @ApiOperation(value = "发放代金券")
   @PostMapping("/sendCoupon")
-  public WxPayCouponSendResult sendCoupon(@RequestBody WxPayCouponSendRequest request)
-      throws WxPayException {
+  public WxPayCouponSendResult sendCoupon(@RequestBody WxPayCouponSendRequest request) throws WxPayException {
     return this.wxService.sendCoupon(request);
   }
 
   @ApiOperation(value = "查询代金券批次")
   @PostMapping("/queryCouponStock")
-  public WxPayCouponStockQueryResult queryCouponStock(@RequestBody WxPayCouponStockQueryRequest request)
-      throws WxPayException {
+  public WxPayCouponStockQueryResult queryCouponStock(@RequestBody WxPayCouponStockQueryRequest request) throws WxPayException {
     return this.wxService.queryCouponStock(request);
   }
 
   @ApiOperation(value = "查询代金券信息")
   @PostMapping("/queryCouponInfo")
-  public WxPayCouponInfoQueryResult queryCouponInfo(@RequestBody WxPayCouponInfoQueryRequest request)
-      throws WxPayException {
+  public WxPayCouponInfoQueryResult queryCouponInfo(@RequestBody WxPayCouponInfoQueryRequest request) throws WxPayException {
     return this.wxService.queryCouponInfo(request);
   }
 
