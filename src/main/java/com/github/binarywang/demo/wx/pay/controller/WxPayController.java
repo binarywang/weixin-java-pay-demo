@@ -27,6 +27,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class WxPayController {
   private WxPayService wxService;
+  private WxPayService wx2Service;
 
   /**
    * <pre>

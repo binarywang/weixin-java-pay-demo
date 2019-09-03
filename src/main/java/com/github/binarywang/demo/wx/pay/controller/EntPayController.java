@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class EntPayController {
   private WxPayService wxService;
+  private WxPayService wx2Service;
 
   /**
    * <pre>

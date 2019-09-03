@@ -5,7 +5,6 @@ import com.github.binarywang.wxpay.service.WxPayService;
 import com.github.binarywang.wxpay.service.impl.WxPayServiceImpl;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -22,8 +21,14 @@ import org.springframework.context.annotation.Configuration;
 public class WxPayConfiguration {
   private WxPayProperties properties;
 
-  @Bean
-  @ConditionalOnMissingBean
+  @Bean(name = "wx2Service")
+  @ConditionalOnMissingBean(name = "wx2Service")
+  public WxPayService wx2Service() {
+    return new WxPayServiceImpl();
+  }
+
+  @Bean(name = "wxService")
+  @ConditionalOnMissingBean(name = "wxService")
   public WxPayService wxService() {
     WxPayConfig payConfig = new WxPayConfig();
     payConfig.setAppId(StringUtils.trimToNull(this.properties.getAppId()));
