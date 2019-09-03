@@ -5,6 +5,7 @@ import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,13 +20,9 @@ import org.springframework.web.bind.annotation.*;
 @Api("企业付款")
 @RequestMapping("/pay")
 @RestController
+@AllArgsConstructor
 public class EntPayController {
   private WxPayService wxService;
-
-  @Autowired
-  public EntPayController(WxPayService wxService) {
-    this.wxService = wxService;
-  }
 
   /**
    * <pre>
