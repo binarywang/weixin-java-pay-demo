@@ -22,4 +22,4 @@ __尽量详细描述__
 
 
 ### 日志
-__将日志放在 [pastebin](https://paste.ubuntu.com/) 或者其他地方，并将url地址贴在这里__
+__日志内容如果过多，请将日志放在 [pastebin](https://paste.ubuntu.com/) 或者其他地方，并将url地址贴在这里__
