@@ -6,6 +6,7 @@
 #### 本 Demo 基于 `WxJava` 和 `Spring Boot` 构建，演示微信支付后端接口使用方法。
 
 
+
 <table border="0">
 	<tbody>
 		<tr>
@@ -20,8 +21,13 @@
 				</a>
 			</td>
 			<td align="right" valign="middle">
-				<a href="https://coding.net/?utm_source=WxJava" target="_blank">
-					<img height="120" src="https://gitee.com/binary/weixin-java-tools/raw/master/images/banners/coding.jpg">
+				<a href="https://mp.weixin.qq.com/s/R30CNEpkELJg4SRkX0mTDA" target="_blank">
+					<img height="120" src="https://gitee.com/binary/weixin-java-tools/raw/master/images/banners/planB.jpg">
+				</a>
+			</td>
+			<td align="center" valign="middle">
+				<a href="https://www.vultr.com/?ref=7888900-4F" target="_blank">
+					<img height="120" src="https://gitee.com/binary/weixin-java-tools/raw/master/images/banners/vultr.jpg">
 				</a>
 			</td>
 			<td align="center" valign="middle">
