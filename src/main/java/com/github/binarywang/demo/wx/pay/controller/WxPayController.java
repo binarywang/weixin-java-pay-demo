@@ -197,7 +197,7 @@ public class WxPayController {
   @ApiOperation(value = "发送红包")
   @PostMapping("/sendRedpack")
   public WxPaySendRedpackResult sendRedpack(@RequestBody WxPaySendRedpackRequest request) throws WxPayException {
-    return this.wxService.sendRedpack(request);
+    return this.wxService.getRedpackService().sendRedpack(request);
   }
 
   /**
@@ -214,7 +214,7 @@ public class WxPayController {
   @ApiOperation(value = "查询红包")
   @GetMapping("/queryRedpack/{mchBillNo}")
   public WxPayRedpackQueryResult queryRedpack(@PathVariable String mchBillNo) throws WxPayException {
-    return this.wxService.queryRedpack(mchBillNo);
+    return this.wxService.getRedpackService().queryRedpack(mchBillNo);
   }
 
   /**
