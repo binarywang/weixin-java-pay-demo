@@ -6,9 +6,15 @@ logging:
 
 wx:
   pay:
-    appId: #微信公众号或者小程序等的appid
-    mchId: #微信支付商户号
+    appId: #微信公众号或者小程序等的appid (V3商户模式需要)
+    mchId: #微信支付商户号 (V3商户模式需要)
     mchKey: #微信支付商户密钥
     subAppId: #服务商模式下的子商户公众账号ID
     subMchId: #服务商模式下的子商户号
     keyPath: # p12证书的位置，可以指定绝对路径，也可以指定类路径（以classpath:开头）
+    apiV3Key: # apiV3 秘钥值 (V3商户模式需要)
+    certSerialNo: # apiV3 证书序列号值 (V3商户模式需要)
+    privateCertPath: # apiclient_cert.pem证书文件的绝对路径或者以classpath:开头的类路径. (V3商户模式需要)
+    privateKeyPath: # apiclient_key.pem证书文件的绝对路径或者以classpath:开头的类路径. (V3商户模式需要)
+    publicKeyPath: # 微信支付公钥，pub_key.pem证书文件的绝对路径或者以classpath:开头的类路径. (V3商户模式需要)
+    publicKeyId: # 微信支付公钥ID (V3商户模式需要)
