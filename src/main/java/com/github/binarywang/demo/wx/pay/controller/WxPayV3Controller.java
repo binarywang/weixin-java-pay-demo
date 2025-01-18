@@ -188,7 +188,7 @@ public class WxPayV3Controller {
      */
     @ApiOperation(value = "退款查询")
     @GetMapping("/refundQuery")
-    public WxPayRefundQueryV3Result refundQuery(@PathVariable String mchId, @RequestParam(required = false) String outRefundNo) {
+    public WxPayRefundQueryV3Result refundQuery(@PathVariable String mchId, @RequestParam("outRefundNo") String outRefundNo) {
         if (!wxService.switchover(mchId)) {
             throw new IllegalArgumentException(String.format("未找到对应mchId=[%s]的配置，请核实！", mchId));
         }
