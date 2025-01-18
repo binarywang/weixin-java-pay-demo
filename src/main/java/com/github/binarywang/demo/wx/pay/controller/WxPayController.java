@@ -7,6 +7,7 @@ import com.github.binarywang.wxpay.bean.notify.WxPayRefundNotifyResult;
 import com.github.binarywang.wxpay.bean.notify.WxScanPayNotifyResult;
 import com.github.binarywang.wxpay.bean.request.*;
 import com.github.binarywang.wxpay.bean.result.*;
+import com.github.binarywang.wxpay.config.WxPayConfigHolder;
 import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
 import io.swagger.annotations.Api;
@@ -23,11 +24,10 @@ import java.util.Date;
  */
 @Api("微信支付")
 @RestController
-@RequestMapping("/pay")
+@RequestMapping("/pay/{mchId}")
 @AllArgsConstructor
 public class WxPayController {
   private WxPayService wxService;
-  private WxPayService wx2Service;
 
   /**
    * <pre>
@@ -46,16 +46,34 @@ public class WxPayController {
    */
   @ApiOperation(value = "查询订单")
   @GetMapping("/queryOrder")
-  public WxPayOrderQueryResult queryOrder(@RequestParam(required = false) String transactionId,
-                                          @RequestParam(required = false) String outTradeNo)
-    throws WxPayException {
-    return this.wxService.queryOrder(transactionId, outTradeNo);
+  public WxPayOrderQueryResult queryOrder(@PathVariable String mchId,
+                                          @RequestParam(required = false) String transactionId,
+                                          @RequestParam(required = false) String outTradeNo) {
+    if (!wxService.switchover(mchId)) {
+      throw new IllegalArgumentException(String.format("未找到对应mchId=[%s]的配置，请核实！", mchId));
+    }
+    try {
+      return this.wxService.queryOrder(transactionId, outTradeNo);
+    } catch (WxPayException e) {
+      throw new RuntimeException(e);
+    } finally {
+      WxPayConfigHolder.remove();
+    }
   }
 
   @ApiOperation(value = "查询订单")
   @PostMapping("/queryOrder")
-  public WxPayOrderQueryResult queryOrder(@RequestBody WxPayOrderQueryRequest wxPayOrderQueryRequest) throws WxPayException {
-    return this.wxService.queryOrder(wxPayOrderQueryRequest);
+  public WxPayOrderQueryResult queryOrder(@PathVariable String mchId, @RequestBody WxPayOrderQueryRequest wxPayOrderQueryRequest) {
+    if (!wxService.switchover(mchId)) {
+      throw new IllegalArgumentException(String.format("未找到对应mchId=[%s]的配置，请核实！", mchId));
+    }
+    try {
+      return this.wxService.queryOrder(wxPayOrderQueryRequest);
+    } catch (WxPayException e) {
+      throw new RuntimeException(e);
+    } finally {
+      WxPayConfigHolder.remove();
+    }
   }
 
   /**
@@ -74,14 +92,32 @@ public class WxPayController {
    */
   @ApiOperation(value = "关闭订单")
   @GetMapping("/closeOrder/{outTradeNo}")
-  public WxPayOrderCloseResult closeOrder(@PathVariable String outTradeNo) throws WxPayException {
-    return this.wxService.closeOrder(outTradeNo);
+  public WxPayOrderCloseResult closeOrder(@PathVariable String mchId, @PathVariable String outTradeNo) {
+    if (!wxService.switchover(mchId)) {
+      throw new IllegalArgumentException(String.format("未找到对应mchId=[%s]的配置，请核实！", mchId));
+    }
+    try {
+      return this.wxService.closeOrder(outTradeNo);
+    } catch (WxPayException e) {
+      throw new RuntimeException(e);
+    } finally {
+      WxPayConfigHolder.remove();
+    }
   }
 
   @ApiOperation(value = "关闭订单")
   @PostMapping("/closeOrder")
-  public WxPayOrderCloseResult closeOrder(@RequestBody WxPayOrderCloseRequest wxPayOrderCloseRequest) throws WxPayException {
-    return this.wxService.closeOrder(wxPayOrderCloseRequest);
+  public WxPayOrderCloseResult closeOrder(@PathVariable String mchId, @RequestBody WxPayOrderCloseRequest wxPayOrderCloseRequest) {
+    if (!wxService.switchover(mchId)) {
+      throw new IllegalArgumentException(String.format("未找到对应mchId=[%s]的配置，请核实！", mchId));
+    }
+    try {
+      return this.wxService.closeOrder(wxPayOrderCloseRequest);
+    } catch (WxPayException e) {
+      throw new RuntimeException(e);
+    } finally {
+      WxPayConfigHolder.remove();
+    }
   }
 
   /**
@@ -93,8 +129,17 @@ public class WxPayController {
    */
   @ApiOperation(value = "统一下单，并组装所需支付参数")
   @PostMapping("/createOrder")
-  public <T> T createOrder(@RequestBody WxPayUnifiedOrderRequest request) throws WxPayException {
-    return this.wxService.createOrder(request);
+  public <T> T createOrder(@PathVariable String mchId, @RequestBody WxPayUnifiedOrderRequest request) {
+    if (!wxService.switchover(mchId)) {
+      throw new IllegalArgumentException(String.format("未找到对应mchId=[%s]的配置，请核实！", mchId));
+    }
+    try {
+      return this.wxService.createOrder(request);
+    } catch (WxPayException e) {
+      throw new RuntimeException(e);
+    } finally {
+      WxPayConfigHolder.remove();
+    }
   }
 
   /**
@@ -106,8 +151,17 @@ public class WxPayController {
    */
   @ApiOperation(value = "原生的统一下单接口")
   @PostMapping("/unifiedOrder")
-  public WxPayUnifiedOrderResult unifiedOrder(@RequestBody WxPayUnifiedOrderRequest request) throws WxPayException {
-    return this.wxService.unifiedOrder(request);
+  public WxPayUnifiedOrderResult unifiedOrder(@PathVariable String mchId, @RequestBody WxPayUnifiedOrderRequest request) {
+    if (!wxService.switchover(mchId)) {
+      throw new IllegalArgumentException(String.format("未找到对应mchId=[%s]的配置，请核实！", mchId));
+    }
+    try {
+      return this.wxService.unifiedOrder(request);
+    } catch (WxPayException e) {
+      throw new RuntimeException(e);
+    } finally {
+      WxPayConfigHolder.remove();
+    }
   }
 
   /**
@@ -122,8 +176,17 @@ public class WxPayController {
    */
   @ApiOperation(value = "退款")
   @PostMapping("/refund")
-  public WxPayRefundResult refund(@RequestBody WxPayRefundRequest request) throws WxPayException {
-    return this.wxService.refund(request);
+  public WxPayRefundResult refund(@PathVariable String mchId, @RequestBody WxPayRefundRequest request) {
+    if (!wxService.switchover(mchId)) {
+      throw new IllegalArgumentException(String.format("未找到对应mchId=[%s]的配置，请核实！", mchId));
+    }
+    try {
+      return this.wxService.refund(request);
+    } catch (WxPayException e) {
+      throw new RuntimeException(e);
+    } finally {
+      WxPayConfigHolder.remove();
+    }
   }
 
   /**
@@ -145,42 +208,87 @@ public class WxPayController {
    */
   @ApiOperation(value = "退款查询")
   @GetMapping("/refundQuery")
-  public WxPayRefundQueryResult refundQuery(@RequestParam(required = false) String transactionId,
+  public WxPayRefundQueryResult refundQuery(@PathVariable String mchId,
+                                            @RequestParam(required = false) String transactionId,
                                             @RequestParam(required = false) String outTradeNo,
                                             @RequestParam(required = false) String outRefundNo,
-                                            @RequestParam(required = false) String refundId)
-    throws WxPayException {
-    return this.wxService.refundQuery(transactionId, outTradeNo, outRefundNo, refundId);
+                                            @RequestParam(required = false) String refundId) {
+    if (!wxService.switchover(mchId)) {
+      throw new IllegalArgumentException(String.format("未找到对应mchId=[%s]的配置，请核实！", mchId));
+    }
+    try {
+      return this.wxService.refundQuery(transactionId, outTradeNo, outRefundNo, refundId);
+    } catch (WxPayException e) {
+      throw new RuntimeException(e);
+    } finally {
+      WxPayConfigHolder.remove();
+    }
   }
 
   @ApiOperation(value = "退款查询")
   @PostMapping("/refundQuery")
-  public WxPayRefundQueryResult refundQuery(@RequestBody WxPayRefundQueryRequest wxPayRefundQueryRequest) throws WxPayException {
-    return this.wxService.refundQuery(wxPayRefundQueryRequest);
+  public WxPayRefundQueryResult refundQuery(@PathVariable String mchId, @RequestBody WxPayRefundQueryRequest wxPayRefundQueryRequest) {
+    if (!wxService.switchover(mchId)) {
+      throw new IllegalArgumentException(String.format("未找到对应mchId=[%s]的配置，请核实！", mchId));
+    }
+    try {
+      return this.wxService.refundQuery(wxPayRefundQueryRequest);
+    } catch (WxPayException e) {
+      throw new RuntimeException(e);
+    } finally {
+      WxPayConfigHolder.remove();
+    }
   }
 
   @ApiOperation(value = "支付回调通知处理")
   @PostMapping("/notify/order")
-  public String parseOrderNotifyResult(@RequestBody String xmlData) throws WxPayException {
-    final WxPayOrderNotifyResult notifyResult = this.wxService.parseOrderNotifyResult(xmlData);
-    // TODO 根据自己业务场景需要构造返回对象
-    return WxPayNotifyResponse.success("成功");
+  public String parseOrderNotifyResult(@PathVariable String mchId, @RequestBody String xmlData) {
+    if (!wxService.switchover(mchId)) {
+      throw new IllegalArgumentException(String.format("未找到对应mchId=[%s]的配置，请核实！", mchId));
+    }
+    try {
+      final WxPayOrderNotifyResult notifyResult = this.wxService.parseOrderNotifyResult(xmlData);
+      // TODO 根据自己业务场景需要构造返回对象
+      return WxPayNotifyResponse.success("成功");
+    } catch (WxPayException e) {
+      throw new RuntimeException(e);
+    } finally {
+      WxPayConfigHolder.remove();
+    }
   }
 
   @ApiOperation(value = "退款回调通知处理")
   @PostMapping("/notify/refund")
-  public String parseRefundNotifyResult(@RequestBody String xmlData) throws WxPayException {
-    final WxPayRefundNotifyResult result = this.wxService.parseRefundNotifyResult(xmlData);
-    // TODO 根据自己业务场景需要构造返回对象
-    return WxPayNotifyResponse.success("成功");
+  public String parseRefundNotifyResult(@PathVariable String mchId, @RequestBody String xmlData) {
+    if (!wxService.switchover(mchId)) {
+      throw new IllegalArgumentException(String.format("未找到对应mchId=[%s]的配置，请核实！", mchId));
+    }
+    try {
+      final WxPayRefundNotifyResult result = this.wxService.parseRefundNotifyResult(xmlData);
+      // TODO 根据自己业务场景需要构造返回对象
+      return WxPayNotifyResponse.success("成功");
+    } catch (WxPayException e) {
+      throw new RuntimeException(e);
+    } finally {
+      WxPayConfigHolder.remove();
+    }
   }
 
   @ApiOperation(value = "扫码支付回调通知处理")
   @PostMapping("/notify/scanpay")
-  public String parseScanPayNotifyResult(String xmlData) throws WxPayException {
-    final WxScanPayNotifyResult result = this.wxService.parseScanPayNotifyResult(xmlData);
-    // TODO 根据自己业务场景需要构造返回对象
-    return WxPayNotifyResponse.success("成功");
+  public String parseScanPayNotifyResult(@PathVariable String mchId, String xmlData) {
+    if (!wxService.switchover(mchId)) {
+      throw new IllegalArgumentException(String.format("未找到对应mchId=[%s]的配置，请核实！", mchId));
+    }
+    try {
+      final WxScanPayNotifyResult result = this.wxService.parseScanPayNotifyResult(xmlData);
+      // TODO 根据自己业务场景需要构造返回对象
+      return WxPayNotifyResponse.success("成功");
+    } catch (WxPayException e) {
+      throw new RuntimeException(e);
+    } finally {
+      WxPayConfigHolder.remove();
+    }
   }
 
   /**
@@ -197,8 +305,17 @@ public class WxPayController {
    */
   @ApiOperation(value = "发送红包")
   @PostMapping("/sendRedpack")
-  public WxPaySendRedpackResult sendRedpack(@RequestBody WxPaySendRedpackRequest request) throws WxPayException {
-    return this.wxService.sendRedpack(request);
+  public WxPaySendRedpackResult sendRedpack(@PathVariable String mchId, @RequestBody WxPaySendRedpackRequest request) {
+    if (!wxService.switchover(mchId)) {
+      throw new IllegalArgumentException(String.format("未找到对应mchId=[%s]的配置，请核实！", mchId));
+    }
+    try {
+      return this.wxService.getRedpackService().sendRedpack(request);
+    } catch (WxPayException e) {
+      throw new RuntimeException(e);
+    } finally {
+      WxPayConfigHolder.remove();
+    }
   }
 
   /**
@@ -214,8 +331,17 @@ public class WxPayController {
    */
   @ApiOperation(value = "查询红包")
   @GetMapping("/queryRedpack/{mchBillNo}")
-  public WxPayRedpackQueryResult queryRedpack(@PathVariable String mchBillNo) throws WxPayException {
-    return this.wxService.queryRedpack(mchBillNo);
+  public WxPayRedpackQueryResult queryRedpack(@PathVariable String mchId, @PathVariable String mchBillNo) {
+    if (!wxService.switchover(mchId)) {
+      throw new IllegalArgumentException(String.format("未找到对应mchId=[%s]的配置，请核实！", mchId));
+    }
+    try {
+      return this.wxService.getRedpackService().queryRedpack(mchBillNo);
+    } catch (WxPayException e) {
+      throw new RuntimeException(e);
+    } finally {
+      WxPayConfigHolder.remove();
+    }
   }
 
   /**
@@ -232,8 +358,17 @@ public class WxPayController {
    * @param sideLength 要生成的二维码的边长，如果为空，则取默认值400
    * @return 生成的二维码的字节数组
    */
-  public byte[] createScanPayQrcodeMode1(String productId, File logoFile, Integer sideLength) {
-    return this.wxService.createScanPayQrcodeMode1(productId, logoFile, sideLength);
+  public byte[] createScanPayQrcodeMode1(@PathVariable String mchId, String productId, File logoFile, Integer sideLength) {
+    if (!wxService.switchover(mchId)) {
+      throw new IllegalArgumentException(String.format("未找到对应mchId=[%s]的配置，请核实！", mchId));
+    }
+    try {
+      return this.wxService.createScanPayQrcodeMode1(productId, logoFile, sideLength);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    } finally {
+      WxPayConfigHolder.remove();
+    }
   }
 
   /**
@@ -248,8 +383,17 @@ public class WxPayController {
    * @param productId 产品Id
    * @return 生成的二维码URL连接
    */
-  public String createScanPayQrcodeMode1(String productId) {
-    return this.wxService.createScanPayQrcodeMode1(productId);
+  public String createScanPayQrcodeMode1(@PathVariable String mchId, String productId) {
+    if (!wxService.switchover(mchId)) {
+      throw new IllegalArgumentException(String.format("未找到对应mchId=[%s]的配置，请核实！", mchId));
+    }
+    try {
+      return this.wxService.createScanPayQrcodeMode1(productId);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    } finally {
+      WxPayConfigHolder.remove();
+    }
   }
 
   /**
@@ -265,8 +409,17 @@ public class WxPayController {
    * @param sideLength 要生成的二维码的边长，如果为空，则取默认值400
    * @return 生成的二维码的字节数组
    */
-  public byte[] createScanPayQrcodeMode2(String codeUrl, File logoFile, Integer sideLength) {
-    return this.wxService.createScanPayQrcodeMode2(codeUrl, logoFile, sideLength);
+  public byte[] createScanPayQrcodeMode2(@PathVariable String mchId, String codeUrl, File logoFile, Integer sideLength) {
+    if (!wxService.switchover(mchId)) {
+      throw new IllegalArgumentException(String.format("未找到对应mchId=[%s]的配置，请核实！", mchId));
+    }
+    try {
+      return this.wxService.createScanPayQrcodeMode2(codeUrl, logoFile, sideLength);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    } finally {
+      WxPayConfigHolder.remove();
+    }
   }
 
   /**
@@ -282,8 +435,17 @@ public class WxPayController {
    */
   @ApiOperation(value = "提交交易保障数据")
   @PostMapping("/report")
-  public void report(@RequestBody WxPayReportRequest request) throws WxPayException {
-    this.wxService.report(request);
+  public void report(@PathVariable String mchId, @RequestBody WxPayReportRequest request) {
+    if (!wxService.switchover(mchId)) {
+      throw new IllegalArgumentException(String.format("未找到对应mchId=[%s]的配置，请核实！", mchId));
+    }
+    try {
+      this.wxService.report(request);
+    } catch (WxPayException e) {
+      throw new RuntimeException(e);
+    } finally {
+      WxPayConfigHolder.remove();
+    }
   }
 
   /**
@@ -307,15 +469,33 @@ public class WxPayController {
    */
   @ApiOperation(value = "下载对账单")
   @GetMapping("/downloadBill/{billDate}/{billType}/{tarType}/{deviceInfo}")
-  public WxPayBillResult downloadBill(@PathVariable String billDate, @PathVariable String billType,
-                                      @PathVariable String tarType, @PathVariable String deviceInfo) throws WxPayException {
-    return this.wxService.downloadBill(billDate, billType, tarType, deviceInfo);
+  public WxPayBillResult downloadBill(@PathVariable String mchId, @PathVariable String billDate, @PathVariable String billType,
+                                      @PathVariable String tarType, @PathVariable String deviceInfo) {
+    if (!wxService.switchover(mchId)) {
+      throw new IllegalArgumentException(String.format("未找到对应mchId=[%s]的配置，请核实！", mchId));
+    }
+    try {
+      return this.wxService.downloadBill(billDate, billType, tarType, deviceInfo);
+    } catch (WxPayException e) {
+      throw new RuntimeException(e);
+    } finally {
+      WxPayConfigHolder.remove();
+    }
   }
 
   @ApiOperation(value = "下载对账单")
   @PostMapping("/downloadBill")
-  public WxPayBillResult downloadBill(WxPayDownloadBillRequest wxPayDownloadBillRequest) throws WxPayException {
-    return this.wxService.downloadBill(wxPayDownloadBillRequest);
+  public WxPayBillResult downloadBill(@PathVariable String mchId, WxPayDownloadBillRequest wxPayDownloadBillRequest) {
+    if (!wxService.switchover(mchId)) {
+      throw new IllegalArgumentException(String.format("未找到对应mchId=[%s]的配置，请核实！", mchId));
+    }
+    try {
+      return this.wxService.downloadBill(wxPayDownloadBillRequest);
+    } catch (WxPayException e) {
+      throw new RuntimeException(e);
+    } finally {
+      WxPayConfigHolder.remove();
+    }
   }
 
   /**
@@ -332,8 +512,17 @@ public class WxPayController {
    */
   @ApiOperation(value = "提交刷卡支付")
   @PostMapping("/micropay")
-  public WxPayMicropayResult micropay(@RequestBody WxPayMicropayRequest request) throws WxPayException {
-    return this.wxService.micropay(request);
+  public WxPayMicropayResult micropay(@PathVariable String mchId, @RequestBody WxPayMicropayRequest request) {
+    if (!wxService.switchover(mchId)) {
+      throw new IllegalArgumentException(String.format("未找到对应mchId=[%s]的配置，请核实！", mchId));
+    }
+    try {
+      return this.wxService.micropay(request);
+    } catch (WxPayException e) {
+      throw new RuntimeException(e);
+    } finally {
+      WxPayConfigHolder.remove();
+    }
   }
 
   /**
@@ -350,38 +539,92 @@ public class WxPayController {
    */
   @ApiOperation(value = "撤销订单")
   @PostMapping("/reverseOrder")
-  public WxPayOrderReverseResult reverseOrder(@RequestBody WxPayOrderReverseRequest request) throws WxPayException {
-    return this.wxService.reverseOrder(request);
+  public WxPayOrderReverseResult reverseOrder(@PathVariable String mchId, @RequestBody WxPayOrderReverseRequest request) {
+    if (!wxService.switchover(mchId)) {
+      throw new IllegalArgumentException(String.format("未找到对应mchId=[%s]的配置，请核实！", mchId));
+    }
+    try {
+      return this.wxService.reverseOrder(request);
+    } catch (WxPayException e) {
+      throw new RuntimeException(e);
+    } finally {
+      WxPayConfigHolder.remove();
+    }
   }
 
   @ApiOperation(value = "获取沙箱环境签名key")
   @GetMapping("/getSandboxSignKey")
-  public String getSandboxSignKey() throws WxPayException {
-    return this.wxService.getSandboxSignKey();
+  public String getSandboxSignKey(@PathVariable String mchId) {
+    if (!wxService.switchover(mchId)) {
+      throw new IllegalArgumentException(String.format("未找到对应mchId=[%s]的配置，请核实！", mchId));
+    }
+    try {
+      return this.wxService.getSandboxSignKey();
+    } catch (WxPayException e) {
+      throw new RuntimeException(e);
+    } finally {
+      WxPayConfigHolder.remove();
+    }
   }
 
   @ApiOperation(value = "发放代金券")
   @PostMapping("/sendCoupon")
-  public WxPayCouponSendResult sendCoupon(@RequestBody WxPayCouponSendRequest request) throws WxPayException {
-    return this.wxService.sendCoupon(request);
+  public WxPayCouponSendResult sendCoupon(@PathVariable String mchId, @RequestBody WxPayCouponSendRequest request) {
+    if (!wxService.switchover(mchId)) {
+      throw new IllegalArgumentException(String.format("未找到对应mchId=[%s]的配置，请核实！", mchId));
+    }
+    try {
+      return this.wxService.sendCoupon(request);
+    } catch (WxPayException e) {
+      throw new RuntimeException(e);
+    } finally {
+      WxPayConfigHolder.remove();
+    }
   }
 
   @ApiOperation(value = "查询代金券批次")
   @PostMapping("/queryCouponStock")
-  public WxPayCouponStockQueryResult queryCouponStock(@RequestBody WxPayCouponStockQueryRequest request) throws WxPayException {
-    return this.wxService.queryCouponStock(request);
+  public WxPayCouponStockQueryResult queryCouponStock(@PathVariable String mchId, @RequestBody WxPayCouponStockQueryRequest request) {
+    if (!wxService.switchover(mchId)) {
+      throw new IllegalArgumentException(String.format("未找到对应mchId=[%s]的配置，请核实！", mchId));
+    }
+    try {
+      return this.wxService.queryCouponStock(request);
+    } catch (WxPayException e) {
+      throw new RuntimeException(e);
+    } finally {
+      WxPayConfigHolder.remove();
+    }
   }
 
   @ApiOperation(value = "查询代金券信息")
   @PostMapping("/queryCouponInfo")
-  public WxPayCouponInfoQueryResult queryCouponInfo(@RequestBody WxPayCouponInfoQueryRequest request) throws WxPayException {
-    return this.wxService.queryCouponInfo(request);
+  public WxPayCouponInfoQueryResult queryCouponInfo(@PathVariable String mchId, @RequestBody WxPayCouponInfoQueryRequest request) {
+    if (!wxService.switchover(mchId)) {
+      throw new IllegalArgumentException(String.format("未找到对应mchId=[%s]的配置，请核实！", mchId));
+    }
+    try {
+      return this.wxService.queryCouponInfo(request);
+    } catch (WxPayException e) {
+      throw new RuntimeException(e);
+    } finally {
+      WxPayConfigHolder.remove();
+    }
   }
 
   @ApiOperation(value = "拉取订单评价数据")
   @PostMapping("/queryComment")
-  public String queryComment(Date beginDate, Date endDate, Integer offset, Integer limit) throws WxPayException {
-    return this.wxService.queryComment(beginDate, endDate, offset, limit);
+  public String queryComment(@PathVariable String mchId, Date beginDate, Date endDate, Integer offset, Integer limit) {
+    if (!wxService.switchover(mchId)) {
+      throw new IllegalArgumentException(String.format("未找到对应mchId=[%s]的配置，请核实！", mchId));
+    }
+    try {
+      return this.wxService.queryComment(beginDate, endDate, offset, limit);
+    } catch (WxPayException e) {
+      throw new RuntimeException(e);
+    } finally {
+      WxPayConfigHolder.remove();
+    }
   }
 
 }

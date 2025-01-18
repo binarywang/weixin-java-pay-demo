@@ -6,19 +6,19 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.7.RELEASE</version>
+        <version>2.6.3</version>
     </parent>
 
     <groupId>com.github.binarywang</groupId>
     <version>1.0.0-SNAPSHOT</version>
     <artifactId>weixin-java-pay-demo</artifactId>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
     <name>spring-boot-demo-for-wechat-pay</name>
     <description>微信支付 Demo with Spring Boot</description>
 
     <properties>
-        <weixin-java-pay.version>3.5.0</weixin-java-pay.version>
+        <weixin-java-pay.version>4.7.0</weixin-java-pay.version>
         <io.springfox.version>2.5.0</io.springfox.version>
 
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -59,8 +59,8 @@
         </dependency>
         <dependency>
             <groupId>org.jodd</groupId>
-            <artifactId>jodd-http</artifactId>
-            <version>3.9.1</version>
+            <artifactId>jodd-util</artifactId>
+            <version>6.0.0</version>
         </dependency>
 
         <dependency>
