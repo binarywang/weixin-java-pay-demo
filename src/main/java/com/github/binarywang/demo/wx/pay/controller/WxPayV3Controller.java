@@ -124,7 +124,7 @@ public class WxPayV3Controller {
      */
     @ApiOperation(value = "退款查询")
     @GetMapping("/refundQuery")
-    public WxPayRefundQueryV3Result refundQuery(@RequestParam(required = false) String outRefundNo)
+    public WxPayRefundQueryV3Result refundQuery(@RequestParam("outRefundNo") String outRefundNo)
             throws WxPayException {
         return this.wxService.refundQueryV3(outRefundNo);
     }
