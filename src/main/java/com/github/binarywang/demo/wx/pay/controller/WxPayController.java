@@ -327,7 +327,19 @@ public class WxPayController {
    * 提醒2：在调用查询接口返回后，如果交易状况不明晰，请调用【撤销订单API】，此时如果交易失败则关闭订单，该单不能再支付成功；如果交易成功，则将扣款退回到用户账户。当撤销无返回或错误时，请再次调用。注意：请勿扣款后立即调用【撤销订单API】,建议至少15秒后再调用。撤销订单API需要双向证书。
    * 接口地址：   https://api.mch.weixin.qq.com/pay/micropay
    * 是否需要证书：不需要。
+   * 注意：appid、mch_id、nonce_str、sign 等公共参数无需手动设置，SDK 会从配置中自动填充并完成签名，
+   *       请勿自行调用 SignUtils 手动计算并设置 sign，否则会导致签名错误。
+   *       调用方只需设置业务参数，示例如下：
+   * WxPayMicropayRequest request = new WxPayMicropayRequest();
+   * request.setBody("商品描述");
+   * request.setOutTradeNo("商户系统内部订单号");
+   * request.setTotalFee(100);
+   * request.setSpbillCreateIp("终端IP");
+   * request.setAuthCode("用户付款码");
+   * WxPayMicropayResult result = wxPayService.micropay(request);
    * </pre>
+   *
+   * @param request 请求对象，注意 appid、mchId、nonceStr、sign 等请求字段（对应 XML 字段 appid、mch_id、nonce_str、sign）无需手动设置，SDK 会自动从配置中获取并完成签名
    */
   @ApiOperation(value = "提交刷卡支付")
   @PostMapping("/micropay")
