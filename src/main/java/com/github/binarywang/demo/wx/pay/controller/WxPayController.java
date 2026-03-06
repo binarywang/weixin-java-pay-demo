@@ -331,11 +331,11 @@ public class WxPayController {
    *       请勿自行调用 SignUtils 手动计算并设置 sign，否则会导致签名错误。
    *       调用方只需设置业务参数，示例如下：
    * WxPayMicropayRequest request = new WxPayMicropayRequest();
-   * request.setBody(“商品描述”);
-   * request.setOutTradeNo(“商户系统内部订单号”);
+   * request.setBody("商品描述");
+   * request.setOutTradeNo("商户系统内部订单号");
    * request.setTotalFee(100);
-   * request.setSpbillCreateIp(“终端IP”);
-   * request.setAuthCode(“用户付款码”);
+   * request.setSpbillCreateIp("终端IP");
+   * request.setAuthCode("用户付款码");
    * WxPayMicropayResult result = wxPayService.micropay(request);
    * </pre>
    *
