@@ -339,7 +339,7 @@ public class WxPayController {
    * WxPayMicropayResult result = wxPayService.micropay(request);
    * </pre>
    *
-   * @param request 请求对象，注意 appid、mchId、nonceStr、sign 等公共参数无需设置，SDK 会自动从配置中获取并完成签名
+   * @param request 请求对象，注意 appid、mchId、nonceStr、sign 等请求字段（对应 XML 字段 appid、mch_id、nonce_str、sign）无需手动设置，SDK 会自动从配置中获取并完成签名
    */
   @ApiOperation(value = "提交刷卡支付")
   @PostMapping("/micropay")
